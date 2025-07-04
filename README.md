@@ -1,39 +1,103 @@
 # CepValidator
 
-TODO: Delete this and the text below, and describe your gem
+Valide e busque informações de CEPs brasileiros de forma simples usando Ruby!
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cep_validator`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Instalação
 
-## Installation
+Adicione esta linha ao seu Gemfile:
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+ gem 'cep_validator', git: 'https://github.com/carloshendvpm/cep_validator_gem'
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Ou instale diretamente:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem install specific_install
+gem specific_install https://github.com/carloshendvpm/cep_validator_gem
+```
+## Uso
+
+### Validar um CEP
+
+```ruby
+require 'cep_validator'
+
+CepValidator.valid?("01310-100") # => true
+CepValidator.valid?("00000-000") # => false
+CepValidator.valid?("12")        # => false
 ```
 
-## Usage
+### Buscar informações de um CEP
 
-TODO: Write usage instructions here
+```ruby
+require 'cep_validator'
 
-## Development
+address = CepValidator.fetch("01310-100")
+puts address # => Avenida Paulista, Bela Vista - São Paulo/SP - CEP: 01310-100
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+# Acessando os dados detalhados
+puts address.to_h
+# {
+#   cep: "01310-100",
+#   logradouro: "Avenida Paulista",
+#   bairro: "Bela Vista",
+#   cidade: "São Paulo",
+#   uf: "SP",
+#   complemento: "lado par"
+# }
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Via linha de comando
 
-## Contributing
+```bash
+cep_validator 01310-100
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/cep_validator.
+Saída:
+```
+✓ CEP válido: 01310-100
 
-## License
+Buscando informações...
+Avenida Paulista, Bela Vista - São Paulo/SP - CEP: 01310-100
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Detalhes completos:
+  Cep: 01310-100
+  Logradouro: Avenida Paulista
+  Bairro: Bela Vista
+  Cidade: São Paulo
+  Uf: SP
+  Complemento: lado par
+```
+
+## Tratamento de erros
+
+- `CepValidator::InvalidFormatError` — CEP com formato inválido
+- `CepValidator::NotFoundError` — CEP não encontrado
+- `CepValidator::ApiError` — Erro na consulta à API
+
+## Desenvolvimento
+
+Após clonar o repositório:
+
+```bash
+bin/setup
+```
+
+Para rodar os testes:
+
+```bash
+rake spec
+```
+
+Para abrir um console interativo:
+
+```bash
+bin/console
+```
+
+Para instalar a gem localmente:
+
+```bash
+bundle exec rake install
+```
