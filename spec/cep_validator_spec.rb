@@ -8,4 +8,15 @@ RSpec.describe CepValidator do
   it "does something useful" do
     expect(false).to eq(true)
   end
+  it "returns true for a valid CEP" do
+    expect(CepValidator.valid?("01001-000")).to eq(true)
+  end
+
+  it "returns false for an invalid CEP" do
+    expect(CepValidator.valid?("00000-000")).to eq(false)
+  end
+
+  it "returns false for a malformed CEP" do
+    expect(CepValidator.valid?("abc123")).to eq(false)
+  end
 end
