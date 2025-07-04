@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# exe/cep_validator
+
+require_relative "../lib/cep_validator"
+require "colorize"
+
+def main
+  if ARGV.empty?
+    puts "Opss! CEP não informado".red
+    puts "Uso: cep_validator <CEP>".yellow
+    puts "Exemplo: cep_validator 01310-100".yellow
+    exit 1
+  end
+
+  cep = ARGV[0]
+
+  begin
+    if CepValidator.valid?(cep)
+      puts "✓ CEP válido: #{cep}".green
+
+      puts "\nBuscando informações...".blue
+      address = CepValidator.fetch(cep)
+      puts address
+
+      puts "\nDetalhes completos:".magenta
+      address.to_h.each do |key, value|
+        puts "  #{key.capitalize}: #{value}".cyan if value && !value.empty?
+      end
+    else
+      puts "✗ CEP inválido: #{cep}".red
+      exit 1
+    end
+  rescue CepValidator::Error => e
+    puts "Erro: #{e.message}".red
+    exit 1
+  end
+end
+
+main if __FILE__ == $PROGRAM_NAME
