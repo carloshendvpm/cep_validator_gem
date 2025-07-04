@@ -1,24 +1,37 @@
-Gem::Specification.new do |spec|
-  spec.name          = "cep_validator"
-  spec.version       = "0.1.0"
-  spec.authors       = ["Carlos Henrique"]
-  spec.email         = ["hencarlosdv@gmail.com"]
-  spec.summary       = "Valida e busca informações de CEPs brasileiros"
-  spec.description   = "Uma gem simples para validar CEPs e buscar informações completas usando APIs públicas"
-  spec.homepage      = "https://github.com/carloshendvpm/cep_validator_gem"
-  spec.license       = "MIT"
-  spec.required_ruby_version = ">= 2.7.0"
+# frozen_string_literal: true
 
-  spec.files         = Dir.chdir(__dir__) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
+require_relative "lib/cep_validator/version"
+
+Gem::Specification.new do |spec|
+  spec.name = "cep_validator"
+  spec.version = CepValidator::VERSION
+  spec.authors = ["Carlos Henrique"]
+  spec.email = ["hencarlosdv@gmail.com"]
+
+  spec.summary = "Valida e busca informações de CEPs brasileiros"
+  spec.description = "Uma gem simples para validar CEPs e buscar informações completas usando APIs públicas"
+  spec.homepage = "https://github.com/carloshendvpm/cep_validator_gem"
+  spec.license = "MIT"
+  spec.required_ruby_version = ">= 3.1.0"
+
+  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  gemspec = File.basename(__FILE__)
+  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
+    ls.readlines("\x0", chomp: true).reject do |f|
+      (f == gemspec) ||
+        f.start_with?(*%w[bin/ test/ spec/ features/ .git .github appveyor Gemfile])
+    end
   end
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "vcr", "~> 6.0"
-  spec.add_development_dependency "webmock", "~> 3.0"
+  # Uncomment to register a new dependency of your gem
+  # spec.add_dependency "example-gem", "~> 1.0"
+
+  # For more information and examples about making a new gem, check out our
+  # guide at: https://bundler.io/guides/creating_gem.html
 end
