@@ -26,3 +26,6 @@ jobs:
     
     - name: Run tests
       run: bundle exec rspec
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
