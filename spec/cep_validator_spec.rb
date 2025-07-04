@@ -5,9 +5,6 @@ RSpec.describe CepValidator do
     expect(CepValidator::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
-  end
   it "returns true for a valid CEP" do
     expect(CepValidator.valid?("01001-000")).to eq(true)
   end
