@@ -7,6 +7,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.3)
+    colorize (1.1.0)
     date (3.4.1)
     diff-lcs (1.6.2)
     erb (5.0.1)
@@ -77,6 +78,7 @@ PLATFORMS
 
 DEPENDENCIES
   cep_validator!
+  colorize
   irb
   rake (~> 13.0)
   rspec (~> 3.0)
